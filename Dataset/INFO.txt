@@ -1,0 +1,12 @@
+The project consists in gender identification from high-level features.
+
+The dataset is composed by a Train.txt file that contains training data (6000 tuples) and a Test.txt file that contains test data (2400 tuples). Each row of the data files corresponds to a sample. Features are separated by commas and the last column is the class label (0 or 1).
+
+The dataset consists of male and female speaker embeddings extracted from face images.
+
+A speaker embedding is a small-dimensional, fixed sized representation of an image. Features are continuous values that represent a point in the mdimensional embedding space. The embeddings have already been computed and have to be classified.
+
+Each sample consists of 12 continuous features. Classes are not balanced. To make the problem more tractable, and to avoid potential privacy issues, the dataset consists of synthetic samples that behave similarly to real embeddings.
+
+The primary metric for the dataset is normalized actual DCF with (pi_T = 0,5; Cfn = 1; Cfp = 1) Expect costs in the order of 0.1 (accuracy in the order of 10%) or less.
+
