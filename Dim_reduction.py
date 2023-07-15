@@ -2,39 +2,22 @@ import numpy as np
 import ReadData
 import matplotlib.pyplot as plt
 
-def PCA (D , m):
+def computeProjectionMatrix(D, m):
     # center the dataset in the origin
     mu = ReadData.vcol(D.mean(1))
-    DC = D - mu
-    # compute the matrix
-    C = np.dot(DC,DC.T)/D.shape[1]
+    Dc = D - mu
+    # compute the covariance matrix
+    C = np.dot(Dc, Dc.T)/D.shape[1]
     # get eigenvectors
     _ , U = np.linalg.eigh(C)
     # keep only the first m eigenvectors
-    P = U[:, ::-1][:, :m]
-    # project the dataset over the m- dimensional subspace
+    P = U[:, ::-1][:, 0:m]  
+    return P
+
+def PCA (D , P):
+
     DP = np.dot(P.T, D)
     # return projected dataset
-    return DP
-
-def scatter_2D_plot(DT_pca, LT):
-    plt.figure()
-    plt.scatter(DT_pca[0, LT == 0], DT_pca[1, LT == 0])
-    plt.scatter(DT_pca[0, LT == 1], DT_pca[1, LT == 1])
-    plt.show()
-
-def compute_DataProjection(D, m):
-    # center the dataset in the origin
-    mu = ReadData.vcol(D.mean(1))
-    DC = D - mu
-    # compute the matrix
-    C = np.dot(DC,DC.T)/D.shape[1]
-    # get eigenvectors
-    _ , U = np.linalg.eigh(C)
-    # keep only the first m eigenvectors
-    P = U[:, ::-1][:, :m] 
-    # project the dataset over the m- dimensional subspace
-    DP = np.dot(P.T, D)
     return DP
     
 def computeSigmaMatrix(D):
