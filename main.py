@@ -786,7 +786,7 @@ if __name__ == '__main__':
     ######################
 
     #dobbiamo testare vari gamma => 0.01 0.1 1
-    """
+    
     hparams = {'K': 1, 'eps': 1, 'gamma': 0.01, 'C': 1, 'c': 0, 'd': 1}
     dim_red = None #{'type': 'pca', 'm': 11}
     C = [1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10, 100]
@@ -797,7 +797,7 @@ if __name__ == '__main__':
     for c in C:
         hparams['C'] = c
         print('R: SVM RBF\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
-        _, mindcf = Evaluation.kfold_cross_validation(SVMClf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
+        _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
         mindcf_RBFSVM_noPCA_01p_001g.append(mindcf[0])
         mindcf_RBFSVM_noPCA_05p_001g.append(mindcf[1])
         mindcf_RBFSVM_noPCA_09p_001g.append(mindcf[2])
@@ -812,7 +812,7 @@ if __name__ == '__main__':
     for c in C:
         hparams['C'] = c
         print('R: SVM RBF\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
-        _, mindcf = Evaluation.kfold_cross_validation(SVMClf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
+        _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
         mindcf_RBFSVM_noPCA_01p_01g.append(mindcf[0])
         mindcf_RBFSVM_noPCA_05p_01g.append(mindcf[1])
         mindcf_RBFSVM_noPCA_09p_01g.append(mindcf[2])
@@ -827,7 +827,7 @@ if __name__ == '__main__':
     for c in C:
         hparams['C'] = c
         print('R: SVM RBF\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
-        _, mindcf = Evaluation.kfold_cross_validation(SVMClf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
+        _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
         mindcf_RBFSVM_noPCA_01p_1g.append(mindcf[0])
         mindcf_RBFSVM_noPCA_05p_1g.append(mindcf[1])
         mindcf_RBFSVM_noPCA_09p_1g.append(mindcf[2])
@@ -836,7 +836,7 @@ if __name__ == '__main__':
 
     Evaluation.plot_lambda_minDCF_RBFSVM(C, mindcf_RBFSVM_noPCA_001g, mindcf_RBFSVM_noPCA_01g, mindcf_RBFSVM_noPCA_1g)
 
-    """
+    
 
     #SVM RBF with PCA m=11
     """
@@ -1341,17 +1341,17 @@ if __name__ == '__main__':
     # fig1.set_figheight(5)
     # fig1.set_figwidth(13)
     # Evaluation.plot_Bayes_error_eval(ax=axs1[0, 0], title='Tied Covariance',
-    #                                     model=GauClf.TiedG(), preproc='znorm',
-    #                                     dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=False)
+    #                                      model=TiedGaussian_Clf.TiedG(), preproc='znorm',
+    #                                      dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=False)
     # Evaluation.plot_Bayes_error_eval(ax=axs1[0, 1], title='Linear Logistic Regression',
-    #                                     model=LogRegClf.LinearLogisticRegression(lbd=10**-4, prior_weighted=True, prior=0.5), preproc='znorm',
-    #                                     dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=False)
+    #                                      model=LLR_Clf.LinearLogisticRegression(lbd=10**-4, prior_weighted=True, prior=0.5), preproc='znorm',
+    #                                      dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=False)
     # Evaluation.plot_Bayes_error_eval(ax=axs1[1, 0], title='RBF Kernel SVM',
-    #                                     model=SVMClf.SVM(hparams={'K': 1, 'C': 10, 'gamma': 10**-1}, kernel = 'RBF'), preproc='znorm',
-    #                                     dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=False)
+    #                                      model=SVM_Clf.SVM(hparams={'K': 1, 'C': 10, 'gamma': 10**-1}, kernel = 'RBF'), preproc='znorm',
+    #                                      dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=False)
     # Evaluation.plot_Bayes_error_eval(ax=axs1[1, 1], title='GMM',
-    #                                     model=GMMClf.GMM(alpha=0.1, nComponents=4, psi=0.1, covType='Tied'), preproc='znorm',
-    #                                     dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=False)
+    #                                      model=GMM_Clf.GMM(alpha=0.1, nComponents=4, psi=0.1, covType='Tied'), preproc='znorm',
+    #                                      dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=False)
     # fig1.tight_layout()
     # plt.show()
 
@@ -1359,20 +1359,171 @@ if __name__ == '__main__':
     # fig1.set_figheight(5)
     # fig1.set_figwidth(13)
     # Evaluation.plot_Bayes_error_eval(ax=axs1[0, 0], title='Tied Covariance',
-    #                                     model=GauClf.TiedG(), preproc='znorm',
-    #                                     dimred=None, DT=DT, LT=LT,DE=DE, LE=LE, calibrate_scores=True)
+    #                                      model=TiedGaussian_Clf.TiedG(), preproc='znorm',
+    #                                      dimred=None, DT=DT, LT=LT,DE=DE, LE=LE, calibrate_scores=True)
     # Evaluation.plot_Bayes_error_eval(ax=axs1[0, 1], title='Linear Logistic Regression',
-    #                                     model=LogRegClf.LinearLogisticRegression(lbd=10**-4, prior_weighted=True, prior=0.5), preproc='znorm',
-    #                                     dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=True)
+    #                                      model=LLR_Clf.LinearLogisticRegression(lbd=10**-4, prior_weighted=True, prior=0.5), preproc='znorm',
+    #                                      dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=True)
     # Evaluation.plot_Bayes_error_eval(ax=axs1[1, 0], title='RBF Kernel SVM',
-    #                                     model=SVMClf.SVM(hparams={'K': 1, 'C': 10, 'gamma': 10**-1}, kernel = 'RBF'), preproc='znorm',
-    #                                     dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=True)
+    #                                      model=SVM_Clf.SVM(hparams={'K': 1, 'C': 10, 'gamma': 10**-1}, kernel = 'RBF'), preproc='znorm',
+    #                                      dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=True)
     # Evaluation.plot_Bayes_error_eval(ax=axs1[1, 1], title='GMM',
-    #                                     model=GMMClf.GMM(alpha=0.1, nComponents=4, psi=0.1, covType='Tied'), preproc='znorm',
-    #                                     dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=True)
+    #                                      model=GMM_Clf.GMM(alpha=0.1, nComponents=4, psi=0.1, covType='Tied'), preproc='znorm',
+    #                                      dimred=None, DT=DT, LT=LT, DE=DE, LE=LE, calibrate_scores=True)
+        
     # fig1.tight_layout()
     # plt.show()
 
+    #COMPARATION OF DCF/MINDCF FOR UNCALIBRATED/CALIBRATED SCORE
+
+    #UNCALIBRATED
+
+    ###########################
+    ## GENERATIVE GAUSSIANS ###
+    ###########################
+
+    # # MVG FULL
+
+    # dim_red = None # {'type': 'pca', 'm': 11}
+    # # # MVG TIED # best gaussian model
+
+    # print('R: MVG-Tied Classifier\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
+    # scores_TiedGaussian, _ , _ = Evaluation.validate_final_model(TiedGaussian_Clf.TiedG(), DT, LT, DE, LE, preproc='znorm', dimred=dim_red, iprint=True, prior=None, calibrated=False)
+    
+    # # ##################################
+    # # ### LINEAR LOGISTIC REGRESSION ###
+    # # ##################################
+    
+    # lbd = 10**-4 # best LLR model
+    # print('R: Linear Logistic Regression\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
+    # scores_LLR, _ , _ = Evaluation.validate_final_model(LLR_Clf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.5),
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red, iprint=True, prior=None, calibrated=False)
+    
+    
+    # # ##################
+    # # ### LINEAR SVM ###
+    # # ##################
+    
+    # hparams = {'K': 0, 'eps': 1, 'gamma': 1, 'C': 1} 
+    # print('R: SVM Linear\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
+    # scores_LinearSVM, _ , _ = Evaluation.validate_final_model(SVM_Clf.SVM(hparams, None),
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red,
+    #                                         iprint=True, prior=None, calibrated=False)
+    
+    # ######################
+    # ### RBF KERNEL SVM ###
+    # ######################
+    
+    # hparams = {'K': 1, 'eps': 0, 'gamma': 10**-1, 'C': 10, 'c': 0, 'd': 1} 
+    # print('R: RBF K SVM\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
+    # scores_RBFSVM, _ , _ = Evaluation.validate_final_model(SVM_Clf.SVM(hparams, kernel='RBF'),
+    #                                          DT,
+    #                                          LT,
+    #                                          DE,
+    #                                          LE,
+    #                                          preproc='znorm',
+    #                                          dimred=dim_red,
+    #                                          iprint=True, prior=None, calibrated=False)
+    
+    # # # ###########
+    # # # ### GMM ###
+    # # # ###########
+    
+    # nComponents = 4
+    # cov = 'Tied' # best GMM model
+    # print('R: GMM Classifier(%d components - %s cov)\nPreprocessing: znorm\nDim. Reduction: %s\n' % (nComponents, cov, dim_red))
+    # scores_TiedGMM, _ , _ = Evaluation.validate_final_model(GMM_Clf.GMM(alpha=0.1, nComponents=nComponents, psi=0.01, covType=cov),
+    #                                          DT,
+    #                                          LT,
+    #                                          DE,
+    #                                          LE,
+    #                                          preproc='znorm',
+    #                                          dimred=dim_red, iprint=True, prior=None, calibrated=False)
+
+    #CALIBRATED
+
+    ###########################
+    ## GENERATIVE GAUSSIANS ###
+    ###########################
+
+    # # MVG FULL
+
+    # dim_red = None # {'type': 'pca', 'm': 11}
+    # # # MVG TIED # best gaussian model
+
+    # print('R: MVG-Tied Classifier\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
+    # scores_TiedGaussian, _ , _ = Evaluation.validate_final_model(TiedGaussian_Clf.TiedG(), DT, LT, DE, LE, preproc='znorm', dimred=dim_red, iprint=True, prior=None, calibrated=True)
+    
+    # # ##################################
+    # # ### LINEAR LOGISTIC REGRESSION ###
+    # # ##################################
+    
+    # lbd = 10**-4 # best LLR model
+    # print('R: Linear Logistic Regression\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
+    # scores_LLR, _ , _ = Evaluation.validate_final_model(LLR_Clf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.5),
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red, iprint=True, prior=None, calibrated=True)
+    
+    
+    # # ##################
+    # # ### LINEAR SVM ###
+    # # ##################
+    
+    # hparams = {'K': 0, 'eps': 1, 'gamma': 1, 'C': 1} 
+    # print('R: SVM Linear\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
+    # scores_LinearSVM, _ , _ = Evaluation.validate_final_model(SVM_Clf.SVM(hparams, None),
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red,
+    #                                         iprint=True, prior=None, calibrated=True)
+    
+    
+    # # ######################
+    # # ### RBF KERNEL SVM ###
+    # # ######################
+    
+    # hparams = {'K': 1, 'eps': 0, 'gamma': 10**-1, 'C': 10, 'c': 0, 'd': 1} 
+    # print('R: RBF K SVM\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
+    # scores_RBFSVM, _ , _ = Evaluation.validate_final_model(SVM_Clf.SVM(hparams, kernel='RBF'),
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red,
+    #                                         iprint=True, prior=None, calibrated=True)
+    
+    # # ###########
+    # # ### GMM ###
+    # # ###########
+    
+    # nComponents = 4
+    # cov = 'Tied' # best GMM model
+    # print('R: GMM Classifier(%d components - %s cov)\nPreprocessing: znorm\nDim. Reduction: %s\n' % (nComponents, cov, dim_red))
+    # scores_TiedGMM, _ , _ = Evaluation.validate_final_model(GMM_Clf.GMM(alpha=0.1, nComponents=nComponents, psi=0.01, covType=cov),
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red, iprint=True, prior=None, calibrated=True)
 
     #################
     ## ROC CURVE   ##
@@ -1435,29 +1586,29 @@ if __name__ == '__main__':
     #not prior weighted
     #dim_red = None
 
-    # lbd = 10**-4
+    #lbd = 10**-4
     # print('R: Linear Logistic Regression no pw\nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
     # scores_LLR_nopw, _ , _ = Evaluation.validate_final_model(LLR_Clf.LinearLogisticRegression(lbd, prior_weighted=False),
-    #                                        DT,
-    #                                        LT,
-    #                                        DE,
-    #                                        LE,
-    #                                        preproc='znorm',
-    #                                        dimred=dim_red, iprint=True)
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red, iprint=True)
 
     #Prior 0.1
     # print('R: Linear Logistic Regression pw-0.1 \nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
-    # scores_LLR_pw0.1, _ , _ = Evaluation.validate_final_model(LLR_Clf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.1),
-    #                                        DT,
-    #                                        LT,
-    #                                        DE,
-    #                                        LE,
-    #                                        preproc='znorm',
-    #                                        dimred=dim_red, iprint=True)
+    # scores_LLR_pw01, _ , _ = Evaluation.validate_final_model(LLR_Clf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.1),
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red, iprint=True)
 
     #Prior 0.9
     # print('R: Linear Logistic Regression pw-0.9 \nPreprocessing: znorm\nDim. Reduction: %s\n' % dim_red)
-    # scores_LLR_pw0.9, _ , _ = Evaluation.validate_final_model(LLR_Clf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.9),
+    # scores_LLR_pw09, _ , _ = Evaluation.validate_final_model(LLR_Clf.LinearLogisticRegression(lbd, prior_weighted=True, prior=0.9),
     #                                        DT,
     #                                        LT,
     #                                        DE,
@@ -1473,16 +1624,16 @@ if __name__ == '__main__':
     
     #different C=0.1
 
-    # hparams = {'K': 0, 'eps': 1, 'C': 0.1} 
+    # hparams = {'K': 0, 'eps': 1, 'C': 1} 
     # print('R: SVM Linear\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
     # scores_LinearSVM, _ , _ = Evaluation.validate_final_model(SVM_Clf.SVM(hparams, None),
-    #                                        DT,
-    #                                        LT,
-    #                                        DE,
-    #                                        LE,
-    #                                        preproc='znorm',
-    #                                        dimred=dim_red,
-    #                                        iprint=True)
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red,
+    #                                         iprint=True)
     
 
     #different C=1
@@ -1501,18 +1652,6 @@ if __name__ == '__main__':
     # ### RBF KERNEL SVM ###
     # ######################
     
-    #gamma 0.01
-
-    # hparams = {'K': 1, 'eps': 0, 'gamma': 10**-2, 'C': 10, 'c': 0, 'd': 1} 
-    # print('R: RBF K SVM\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
-    # scores_RBFSVM_g001, _ , _ = Evaluation.validate_final_model(SVM_Clf.SVM(hparams, kernel='RBF'),
-    #                                        DT,
-    #                                        LT,
-    #                                        DE,
-    #                                        LE,
-    #                                        preproc='znorm',
-    #                                        dimred=dim_red,
-    #                                        iprint=True)
 
     #gamma 0.001
     # hparams = {'K': 1, 'eps': 0, 'gamma': 10**-3, 'C': 10, 'c': 0, 'd': 1} 
@@ -1547,12 +1686,12 @@ if __name__ == '__main__':
     # cov = 'Full'
     # print('R: GMM Classifier(%d components - %s cov)\nPreprocessing: znorm\nDim. Reduction: %s\n' % (nComponents, cov, dim_red))
     # scores_GMMFull_4c, _ , _ = Evaluation.validate_final_model(GMM_Clf.GMM(alpha=0.1, nComponents=nComponents, psi=0.01, covType=cov),
-    #                                        DT,
-    #                                        LT,
-    #                                        DE,
-    #                                        LE,
-    #                                        preproc='znorm',
-    #                                        dimred=dim_red, iprint=True)
+    #                                         DT,
+    #                                         LT,
+    #                                         DE,
+    #                                         LE,
+    #                                         preproc='znorm',
+    #                                         dimred=dim_red, iprint=True)
 
     # nComponents = 8
     # cov = 'Full'
