@@ -66,8 +66,6 @@ def plotROC(plt=plt, llrs=None, LE=None):
         FPR.append(conf_matrix[1, 0] / (conf_matrix[0, 0] + conf_matrix[1, 0]))
     plt.plot(np.array(FPR), np.array(TPR))
 
-
-
 def plot_Bayes_error(ax=None, title=None, model=None, preproc='raw', dimred=None, DT=None, LT=None, calibrate_scores=False):
     effPriorLogOdds = np.linspace(-3, 3, 21)
     effPrior = 1 / (1 + np.exp(-effPriorLogOdds))
