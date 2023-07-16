@@ -5,13 +5,9 @@ import matplotlib.pyplot as plt
 class MVG:
     
     def __init__(self):
-        self.mu_classes = []  # list of empiracal means for each class
-        self.cov_classes = []  # list of covariance matrices for each class
+        self.mu_classes = []
+        self.cov_classes = []
 
-    """
-    The training phase consists in computing empirical mean and covariance matrix for rach class
-    These are the only model parameters we need to fit the model to a new (test) dataset
-    """
     def train(self, Dtrain, Ltrain):
         self.Dtrain = Dtrain
         self.Ltrain = Ltrain
@@ -39,7 +35,7 @@ class MVG:
         return -M / 2 * np.log(2 * np.pi) - 1 / 2 * log_abs_detC - 1 / 2 * np.dot(np.dot(xc.T, invC), xc)
 
     def predict(self, Dtest, labels=True):
-        Ntest = Dtest.shape[1] # number of test samples
+        Ntest = Dtest.shape[1]
         S = np.zeros(shape=(self.K, Ntest))
         for i in range(Ntest):
             xt = Dtest[:, i:i + 1]
@@ -59,4 +55,3 @@ class MVG:
             return predicted_labels
         else:
             return np.log(S[1, :]) - np.log(S[0, :])
-        ## np.exp(self.Spost[:, 1]) / (np.exp(self.Spost[:, 0]) + 0.00000001) => What we have to return

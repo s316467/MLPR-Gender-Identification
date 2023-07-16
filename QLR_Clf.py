@@ -31,8 +31,8 @@ class QuadraticLogisticRegression:
     def train(self, Dtrain, Ltrain):
         self.Dtrain = Dtrain
         self.Ltrain = Ltrain
-        self.F = Dtrain.shape[0]  # dimensionality of features space
-        self.K = len(set(Ltrain))  # number of classes
+        self.F = Dtrain.shape[0]
+        self.K = len(set(Ltrain))
         self.N = Dtrain.shape[1]
         self.Dtrain_exp = self.__expand_features_space(Dtrain)
         obj_function = self.__logreg_obj if self.prior_weighted is False else self.__logreg_obj_prior_weighted

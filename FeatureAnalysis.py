@@ -44,7 +44,6 @@ def znormalized_features_evaluation(DE, DT):
 
 def heatmap(DT, LT, plt, title):
         fig, axs = plt.subplots(1, 3)
-        #fig.suptitle(title)
         seaborn.heatmap(np.corrcoef(DT), linewidth=0.2, cmap="Greys", square=True, cbar=False, ax=axs[0])
         seaborn.heatmap(np.corrcoef(DT[:, LT == 0]), linewidth=0.2, cmap="Blues", square=True, cbar=False, ax=axs[1])
         seaborn.heatmap(np.corrcoef(DT[:, LT == 1]), linewidth=0.2, cmap="Oranges", square=True, cbar=False, ax=axs[2])
@@ -58,8 +57,8 @@ def plot_features_hist(DT, LT, preproc='raw', title=True):
                 fig1.suptitle('No preprocessing')
             for i in range(3):
                 for j in range(4):
-                    axs1[i, j].hist(DT[k, LT == 0], bins=20, alpha=0.5, ec='black', density=True)  # male
-                    axs1[i, j].hist(DT[k, LT == 1], bins=20, alpha=0.5, ec='black', density=True)  # female
+                    axs1[i, j].hist(DT[k, LT == 0], bins=20, alpha=0.5, ec='black', density=True)
+                    axs1[i, j].hist(DT[k, LT == 1], bins=20, alpha=0.5, ec='black', density=True)
                     axs1[i, j].set_title('Feature %d' % k)
                     k += 1
         elif preproc == 'gau':
@@ -68,8 +67,8 @@ def plot_features_hist(DT, LT, preproc='raw', title=True):
                 fig1.suptitle('Gaussianization preprocessing')
             for i in range(3):
                 for j in range(4):
-                    axs1[i, j].hist(DTgaussianized[k, LT == 0], bins=20, alpha=0.5, ec='black', density=True)  # male
-                    axs1[i, j].hist(DTgaussianized[k, LT == 1], bins=20, alpha=0.5, ec='black', density=True)  # female
+                    axs1[i, j].hist(DTgaussianized[k, LT == 0], bins=20, alpha=0.5, ec='black', density=True)
+                    axs1[i, j].hist(DTgaussianized[k, LT == 1], bins=20, alpha=0.5, ec='black', density=True)
                     axs1[i, j].set_title('Feature %d' % k)
                     k += 1
         elif preproc == 'znorm':
@@ -78,8 +77,8 @@ def plot_features_hist(DT, LT, preproc='raw', title=True):
                 fig1.suptitle('Z-normalization preprocessing')
             for i in range(3):
                 for j in range(4):
-                    axs1[i, j].hist(DTznorm[k, LT == 0], bins=20, alpha=0.5, ec='black', density=True)  # male
-                    axs1[i, j].hist(DTznorm[k, LT == 1], bins=20, alpha=0.5, ec='black', density=True)  # female
+                    axs1[i, j].hist(DTznorm[k, LT == 0], bins=20, alpha=0.5, ec='black', density=True)
+                    axs1[i, j].hist(DTznorm[k, LT == 1], bins=20, alpha=0.5, ec='black', density=True)
                     axs1[i, j].set_title('Feature %d' % k)
                     k += 1
         elif preproc == 'zg':
@@ -89,8 +88,8 @@ def plot_features_hist(DT, LT, preproc='raw', title=True):
                 fig1.suptitle('Z-normalization + Gaussianization preprocessing')
             for i in range(3):
                 for j in range(4):
-                    axs1[i, j].hist(DTznormgau[k, LT == 0], bins=20, alpha=0.5, ec='black', density=True)  # male
-                    axs1[i, j].hist(DTznormgau[k, LT == 1], bins=20, alpha=0.5, ec='black', density=True)  # female
+                    axs1[i, j].hist(DTznormgau[k, LT == 0], bins=20, alpha=0.5, ec='black', density=True)
+                    axs1[i, j].hist(DTznormgau[k, LT == 1], bins=20, alpha=0.5, ec='black', density=True)
                     axs1[i, j].set_title('Feature %d' % k)
                     k += 1
         fig1.tight_layout()

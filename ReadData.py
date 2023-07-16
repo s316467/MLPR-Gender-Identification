@@ -8,8 +8,8 @@ def vrow(v):
     return v.reshape((1,v.size))
 
 def read_data_training(path):
-    DT = np.zeros(shape=(CONST.NUM_FEATURES, CONST.NUM_TSAMPLES), dtype='float32')  # DT: Data Training
-    LT = np.zeros(CONST.NUM_TSAMPLES, dtype='int32')  # LT: Labels Training
+    DT = np.zeros(shape=(CONST.NUM_FEATURES, CONST.NUM_TSAMPLES), dtype='float32')
+    LT = np.zeros(CONST.NUM_TSAMPLES, dtype='int32')
     with open(path, 'r') as file:
         i = 0
         for line in file:
@@ -22,8 +22,8 @@ def read_data_training(path):
     return DT, LT
 
 def read_data_evaluation(path):
-    DE = np.zeros(shape=(CONST.NUM_FEATURES, CONST.NUM_ESAMPLES), dtype='float32')  # DT: Data Training
-    LE = np.zeros(CONST.NUM_ESAMPLES, dtype='int32')  # LT: Labels Training
+    DE = np.zeros(shape=(CONST.NUM_FEATURES, CONST.NUM_ESAMPLES), dtype='float32')
+    LE = np.zeros(CONST.NUM_ESAMPLES, dtype='int32')
     with open(path, 'r') as file:
         i = 0
         for line in file:

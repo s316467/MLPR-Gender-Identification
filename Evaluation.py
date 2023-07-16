@@ -14,24 +14,8 @@ def error_rate(predicted_labels, actual_labels):
 
 
 def confusion_matrix(predicted_labels, actual_labels):
-    """
-    :param predicted_labels: label predicted for samples according to scores and threshold
-    :param actual_labels: actual labels of samples
-    :return:
-                0 | 1
-            0 TN | FN
-            1 FP | TP
-    """
     conf_matrix = np.zeros(shape=(2, 2))
     i = 0
-    """
-    for pl in predicted_labels:
-        if pl == actual_labels[i]:
-            conf_matrix[pl][pl] += 1
-        else:
-            conf_matrix[pl][actual_labels[i]] += 1
-        i += 1
-    """
     for i in range(2):
         for j in range(2):
             conf_matrix[i, j] = np.sum((predicted_labels == i) & (actual_labels == j))
@@ -39,60 +23,39 @@ def confusion_matrix(predicted_labels, actual_labels):
 
 
 def optimalBayes_confusion_matrix(scores, actual_labels, pi1, Cfn, Cfp):
-    # compute threshold t according to pi1(prior probability), Cfn, Cfp of that application
     t = -np.log((pi1 * Cfn) / ((1 - pi1) * Cfp))
-    # make predictions using scores of the classifier R and computed thresholds
     predicted_labels = np.array(scores > t, dtype='int32')
     return confusion_matrix(predicted_labels, actual_labels)
 
 
 def DCFu(scores, actual_labels, pi1, Cfn, Cfp):
     M = optimalBayes_confusion_matrix(scores, actual_labels, pi1, Cfn, Cfp)
-    fnr = M[0, 1] / (M[0, 1] + M[1, 1])  # FNR
-    fpr = M[1, 0] / (M[0, 0] + M[1, 0])  # FPR
+    fnr = M[0, 1] / (M[0, 1] + M[1, 1])
+    fpr = M[1, 0] / (M[0, 0] + M[1, 0])
     return pi1 * Cfn * fnr + (1 - pi1) * Cfp * fpr
 
 
 def DCF(scores, actual_labels, pi1, Cfn, Cfp):
-    # Compute the DCF of the best dummy system: R that classifies everything as 1 or everything as 0
     Bdummy_DCF = np.minimum(pi1 * Cfn, (1 - pi1) * Cfp)
     return DCFu(scores, actual_labels, pi1, Cfn, Cfp) / Bdummy_DCF
 
 
 def minDCF(scores, actual_labels, pi1, Cfn, Cfp):
-    # Score in increasing order all the scores produces by classifier R
     scores_sort = np.sort(scores)
     normDCFs = []
     for t in scores_sort:
-        # Make prediction by using a threshold t varying among all different sorted scores (all possible thresholds)
         predicted_labels = np.where(scores > t + 0.000001, 1, 0)
-        # Compute confusion matrix given those predicted labels
         M = confusion_matrix(predicted_labels, actual_labels)
-        # Compute FNR, FPR of that confusion matrix
         fnr = M[0, 1] / (M[0, 1] + M[1, 1])
         fpr = M[1, 0] / (M[0, 0] + M[1, 0])
-        # Compute the DCF(normalized) associated to threshold 't' for application (pi1, Cfn, Cfp)
         dcf = pi1 * Cfn * fnr + (1 - pi1) * Cfp * fpr
         Bdummy_DCF = np.minimum(pi1 * Cfn, (1 - pi1) * Cfp)
         dcf_norm = dcf / Bdummy_DCF
         normDCFs.append(dcf_norm)
     return min(normDCFs)
 
-
-def plotDET(plt=plt, llrs=None, LE=None):
-    FNR = []
-    FPR = []
-    llrs_sort = np.sort(llrs)
-    for i in llrs_sort:
-        predicted_labels = np.where(llrs > i + 0.000001, 1, 0)
-        conf_matrix = confusion_matrix(predicted_labels, LE)
-        FNR.append(conf_matrix[0, 1] / (conf_matrix[0, 1] + conf_matrix[1, 1]))
-        FPR.append(conf_matrix[1, 0] / (conf_matrix[0, 0] + conf_matrix[1, 0]))
-    plt.plot(np.array(FPR), np.array(FNR))
-
-
 def plotROC(plt=plt, llrs=None, LE=None):
-    # --- ROC curve -- #
+    
     TPR = []
     FPR = []
     llrs_sort = np.sort(llrs)
@@ -116,7 +79,6 @@ def plot_Bayes_error(ax=None, title=None, model=None, preproc='raw', dimred=None
         dcf.append(DCF)
     ax.plot(effPriorLogOdds, dcf, label='DCF', color='red')
     ax.plot(effPriorLogOdds, mindcf, label='min DCF', color='blue', linestyle='dashed')
-    #plt.ylim([0, 1.1])
     ax.set_xlim([-3, 3])
     ax.legend(['DCF', 'min DCF'])
     ax.set_xlabel("prior log-odds")
@@ -134,7 +96,6 @@ def plot_Bayes_error_eval(ax=None, title=None, model=None, preproc='raw', dimred
         dcf.append(DCF)
     ax.plot(effPriorLogOdds, dcf, label='DCF', color='red')
     ax.plot(effPriorLogOdds, mindcf, label='min DCF', color='blue', linestyle='dashed')
-    #plt.ylim([0, 1.1])
     ax.set_xlim([-3, 3])
     ax.legend(['DCF', 'min DCF'])
     ax.set_xlabel("prior log-odds")
@@ -155,7 +116,6 @@ def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimr
         dimred_type = None
 
     for i in range(k):
-        # Obtain k-1 folds (Dtrain) and 1 validation fold (Dtest)
         fold_test = folds[i]
         Dtest = D[:, fold_test]
         Ltest = L[fold_test]
@@ -166,16 +126,11 @@ def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimr
         Dtrain = D[:, np.array(folds_train).flat]
         Ltrain = L[np.array(folds_train).flat]
 
-        # --- Pre-Processing ---  #
         if preproc == 'gau':
-            # Gaussianize features of Dtrain
             Dtrain_normalized = FA.gaussianized_features_training(Dtrain)
-            # Gaussianize features of Dtest
             Dtest_normalized = FA.gaussianized_features_evaluation(Dtest, Dtrain)
         elif preproc == 'znorm':
-            # Z-Normalize features of Dtrain
             Dtrain_normalized = FA.znormalized_features_training(Dtrain)
-            # Z-Normalize features of Dtest
             Dtest_normalized = FA.znormalized_features_evaluation(Dtest, Dtrain)
         elif preproc == 'zg':
             Dtrain_z = FA.znormalized_features_training(Dtrain)
@@ -186,7 +141,6 @@ def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimr
             Dtrain_normalized = Dtrain
             Dtest_normalized = Dtest
 
-        # --- Dimensionality Reduction --- #
         if dimred_type == 'pca':
             P = DimRed.computeProjectionMatrix(Dtrain_normalized, dimred_m)
             Dtrain_normalized_reduced = DimRed.PCA(Dtrain_normalized, P)
@@ -195,17 +149,13 @@ def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimr
             Dtrain_normalized_reduced = Dtrain_normalized
             Dtest_normalized_reduced = Dtest_normalized
 
-        # --- Model Training --- #
         k_scores.append(model.train(Dtrain_normalized_reduced, Ltrain).predict(Dtest_normalized_reduced, labels=False))
         k_labels.append(Ltest)
 
-    # --- Model Evaluation (for different applications)--- #
     k_scores = np.hstack(k_scores)
     k_labels = np.hstack(k_labels)
 
-    # --- Score Calibration--- #
     if calibrated is True:
-        # Train a logistic regression model prior weighted with k_scores as samples
         s = k_scores.reshape(1, -1)
         p = 0.5
         lr = LLR.LinearLogisticRegression(lbd=10**-6, prior_weighted=True, prior=p)
@@ -221,11 +171,11 @@ def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimr
         for p in priors:
             dcf.append(DCF(k_scores_cal, k_labels, p, 1, 1))
             min_dcf.append(minDCF(k_scores_cal, k_labels, p, 1, 1))
-    else:  # For Bayes error plot
+    else:
         return DCF(k_scores_cal, k_labels, prior, 1, 1), minDCF(k_scores_cal, k_labels, prior, 1, 1)
 
     if iprint:
-        for i in range(len(priors)): # for each application (prior)
+        for i in range(len(priors)):
             print('pi=[%.1f] DCF = %.3f - minDCF = %.3f' % (priors[i], dcf[i], min_dcf[i]))
     return dcf, min_dcf
 
@@ -236,16 +186,11 @@ def validate_final_model(model=None, DT=None, LT=None, DE=None, LE=None, preproc
         dimred_type = dimred['type']
         m = dimred['m']
 
-    # --- Preprocessing --- #
     if preproc == 'gau':
-        # Gaussianize features of Dtrain
         DTnorm = FA.gaussianized_features_training(DT)
-        # Gaussianize features of Dtest
         DEnorm = FA.gaussianized_features_evaluation(DE, DT)
     elif preproc == 'znorm':
-        # Z-Normalize features of Dtrain
         DTnorm = FA.znormalized_features_training(DT)
-            # Z-Normalize features of Dtest
         DEnorm = FA.znormalized_features_evaluation(DE, DT)
     elif preproc == 'zg':
         DTz = FA.znormalized_features_training(DT)
@@ -256,7 +201,6 @@ def validate_final_model(model=None, DT=None, LT=None, DE=None, LE=None, preproc
         DTnorm = DT
         DEnorm = DE
 
-    # --- Dimensionality Reduction --- #
     if dimred is not None and dimred_type == 'pca':
         P = DimRed.computeProjectionMatrix(DTnorm, m)
         DTnorm_red = DimRed.PCA(DTnorm, P)
@@ -265,10 +209,8 @@ def validate_final_model(model=None, DT=None, LT=None, DE=None, LE=None, preproc
         DTnorm_red = DTnorm
         DEnorm_red = DEnorm
 
-    # --- Training and Predicting --- #
     scores = model.train(DTnorm_red, LT).predict(DEnorm_red, labels=False)
 
-    # --- Score Calibration--- #
     if calibrated is True:
         s = scores.reshape(1, -1)
         p = 0.5
@@ -278,7 +220,6 @@ def validate_final_model(model=None, DT=None, LT=None, DE=None, LE=None, preproc
     else:
         scores_cal = scores
 
-    # --- Model Evaluation (for different applications)--- #
     dcf = []
     min_dcf = []
     priors = [0.1, 0.5, 0.9]
@@ -286,11 +227,11 @@ def validate_final_model(model=None, DT=None, LT=None, DE=None, LE=None, preproc
         for p in priors:
             dcf.append(DCF(scores_cal, LE, p, 1, 1))
             min_dcf.append(minDCF(scores_cal, LE, p, 1, 1))
-    else:  # For Bayes error plot
+    else:
         return DCF(scores_cal, LE, prior, 1, 1), minDCF(scores_cal, LE, prior, 1, 1)
 
     if iprint:
-        for i in range(len(priors)):  # for each application (prior)
+        for i in range(len(priors)):
             print('pi=[%.1f] DCF = %.3f - minDCF = %.3f' % (priors[i], dcf[i], min_dcf[i]))
     return scores_cal, dcf, min_dcf
 
@@ -466,7 +407,7 @@ def plot_lambda_minDCF_RBFSVM(C, mindcf_RBFSVM_001g, mindcf_RBFSVM_01g, mindcf_R
 
 
 def plot_gaussian_models(mindcf_MVG, mindcf_Tied, mindcf_Naive):
-    # Z-Normalized
+    
     fig1, axs1 = plt.subplots(1, 3)
     x = [0.1, 0.5, 0.9]
     
@@ -506,24 +447,24 @@ def plot_histogramGMM(comp, mindcf_GMM_noPCA_05p):
     colors = ["red", "blue", "green"]
     
     ind = np.arange(len(comp))
-    axs1[0].bar(x=ind, height=mindcf_GMM_noPCA_05p[0][0], width=0.25, alpha=0.6, color=colors[0]) # z-norm features
-    axs1[0].bar(x=ind+0.25, height=mindcf_GMM_noPCA_05p[0][1], width=0.25, alpha=0.6, color=colors[1]) # gau features
+    axs1[0].bar(x=ind, height=mindcf_GMM_noPCA_05p[0][0], width=0.25, alpha=0.6, color=colors[0])
+    axs1[0].bar(x=ind+0.25, height=mindcf_GMM_noPCA_05p[0][1], width=0.25, alpha=0.6, color=colors[1])
     axs1[0].set_xticks(ind+0.25, comp)
     axs1[0].set_xlabel("GMM components")
     axs1[0].set_title('Full')
     axs1[0].set_ylim([0, 0.6])    
     axs1[0].set_ylabel("minDCF")
 
-    axs1[1].bar(x=ind, height=mindcf_GMM_noPCA_05p[1][0], width=0.25, alpha=0.6, color=colors[0]) # z-norm features
-    axs1[1].bar(x=ind+0.25, height=mindcf_GMM_noPCA_05p[1][1], width=0.25, alpha=0.6, color=colors[1]) # gau features
+    axs1[1].bar(x=ind, height=mindcf_GMM_noPCA_05p[1][0], width=0.25, alpha=0.6, color=colors[0])
+    axs1[1].bar(x=ind+0.25, height=mindcf_GMM_noPCA_05p[1][1], width=0.25, alpha=0.6, color=colors[1])
     axs1[1].set_xticks(ind+0.25, comp)
     axs1[1].set_xlabel("GMM components")
     axs1[1].set_title('Tied')
     axs1[1].set_ylim([0, 0.6])    
     axs1[1].set_ylabel("minDCF")
 
-    axs1[2].bar(x=ind, height=mindcf_GMM_noPCA_05p[2][0], width=0.25, alpha=0.6, color=colors[0]) # z-norm features
-    axs1[2].bar(x=ind+0.25, height=mindcf_GMM_noPCA_05p[2][1], width=0.25, alpha=0.6, color=colors[1]) # gau features
+    axs1[2].bar(x=ind, height=mindcf_GMM_noPCA_05p[2][0], width=0.25, alpha=0.6, color=colors[0])
+    axs1[2].bar(x=ind+0.25, height=mindcf_GMM_noPCA_05p[2][1], width=0.25, alpha=0.6, color=colors[1])
     axs1[2].set_xticks(ind+0.25, comp)
     axs1[2].set_xlabel("GMM components")
     axs1[2].set_title('Diag')

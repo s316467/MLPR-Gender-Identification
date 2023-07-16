@@ -32,8 +32,8 @@ class LinearLogisticRegression:
     def train(self, Dtrain, Ltrain):
         self.Dtrain = Dtrain
         self.Ltrain = Ltrain
-        self.F = Dtrain.shape[0]  # dimensionality of features space
-        self.K = len(set(Ltrain))  # number of classes
+        self.F = Dtrain.shape[0]
+        self.K = len(set(Ltrain))
         self.N = Dtrain.shape[1]
         obj_function = self.__logreg_obj if self.prior_weighted is False else self.__logreg_obj_prior_weighted
         self.x, f, d = scipy.optimize.fmin_l_bfgs_b(func=obj_function,

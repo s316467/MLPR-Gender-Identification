@@ -5,9 +5,6 @@ class TiedG:
     def __init__(self):
         pass
 
-    """
-    The training phase consists in computing empirical mean for each class and only one covarince matrix for all classes
-    """
     def train(self, Dtrain, Ltrain):
         self.Dtrain = Dtrain
         self.Ltrain = Ltrain
@@ -16,8 +13,8 @@ class TiedG:
         self.F = Dtrain.shape[0]
         self.K = len(set(Ltrain))
         cov_classes = []
-        self.mu_classes = []  # list of empiracal means for each class
-        self.tied_cov = 0 # tied covariance matrix
+        self.mu_classes = []
+        self.tied_cov = 0
         for i in self.labels:
             Dtrain_i = self.Dtrain[:, self.Ltrain == i]
             N_i = Dtrain_i.shape[1]

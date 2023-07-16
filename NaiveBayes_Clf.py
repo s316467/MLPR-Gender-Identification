@@ -12,8 +12,8 @@ class NaiveBayes:
         self.N = Dtrain.shape[1]
         self.F = Dtrain.shape[0]
         self.K = len(set(Ltrain))
-        self.mu_classes = []  # list of empiracal means for each class
-        self.diag_cov_classes = []  # diagonal covariance matrices for each class
+        self.mu_classes = []
+        self.diag_cov_classes = []
         cov_classes = []
         for i in self.labels:
             Dtrain_i = self.Dtrain[:, self.Ltrain == i]

@@ -13,7 +13,6 @@ class SVM:
         self.prior = prior
 
     def __LDc_obj(self, alpha):
-        #grad = np.dot(self.H, alpha) - np.ones(self.H.shape[1])
         t = 0.5 * np.dot(np.dot(alpha.reshape(1, -1), self.H), alpha) - alpha.sum(), np.dot(self.H, alpha) - 1
         return t
 
@@ -36,7 +35,6 @@ class SVM:
         self.Ltrain_z_matrix = self.Ltrain_z.reshape(-1, 1) * self.Ltrain_z.reshape(1, -1)
         self.bounds = np.array([(0, self.C)] * Ltrain.shape[0])
 
-        # Class rebalancing
         if self.prior != 0:
             empP = (self.Ltrain == 1).sum() / len(self.Ltrain)
             self.bounds[self.Ltrain == 1] = (0, self.C * self.prior / empP)
@@ -51,9 +49,7 @@ class SVM:
                 return
             self.H = self.Ltrain_z_matrix * ker
         else:
-            # Compute expanded D matrix
             self.expandedD = np.vstack((Dtrain, self.K * np.ones(self.N)))
-            # Compute H matrix
             G = np.dot(self.expandedD.T, self.expandedD)
             self.H = G * self.Ltrain_z_matrix
 
