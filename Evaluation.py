@@ -100,7 +100,7 @@ def plot_Bayes_error_eval(ax=None, title=None, model=None, preproc='raw', dimred
     ax.set_title(title)
 
 
-def kfold_cross_validation(model=None, D=None, L=None, k=10, preproc='raw', dimred=None, iprint=True, prior=None, calibrated=False):
+def kfold_cross_validation(model=None, D=None, L=None, k=5, preproc='raw', dimred=None, iprint=True, prior=None, calibrated=False):
     Nsamples = D.shape[1]
     np.random.seed(0)
     idx = np.random.permutation(Nsamples)
@@ -366,7 +366,7 @@ def plot_lambda_minDCF_RBFSVM(C, mindcf_RBFSVM_001g, mindcf_RBFSVM_01g, mindcf_R
     fig1.set_figheight(5)
     fig1.set_figwidth(13)
     colors = ["red", "blue", "green"]
-    axs1[0].set_title('gamma = 0.01')
+    axs1[0].set_title('γ = 0.01')
     axs1[0].plot(C, mindcf_RBFSVM_001g[0], label="π = 0.1", color=colors[0])
     axs1[0].plot(C, mindcf_RBFSVM_001g[1], label="π = 0.5", color=colors[1])
     axs1[0].plot(C, mindcf_RBFSVM_001g[2], label="π = 0.9", color=colors[2])
@@ -376,20 +376,20 @@ def plot_lambda_minDCF_RBFSVM(C, mindcf_RBFSVM_001g, mindcf_RBFSVM_01g, mindcf_R
     axs1[0].set_ylim([0, 1.2])
     axs1[0].set_ylabel("minDCF")
 
-    axs1[1].set_title('gamma = 0.1')
-    axs1[1].plot(C, mindcf_RBFSVM_01g[0], label="π = 0.1", color=colors[0], linestyle='dashed')
-    axs1[1].plot(C, mindcf_RBFSVM_01g[1], label="π = 0.5", color=colors[1], linestyle='dashed')
-    axs1[1].plot(C, mindcf_RBFSVM_01g[2], label="π = 0.9", color=colors[2], linestyle='dashed')
+    axs1[1].set_title('γ = 0.1')
+    axs1[1].plot(C, mindcf_RBFSVM_01g[0], label="π = 0.1", color=colors[0])
+    axs1[1].plot(C, mindcf_RBFSVM_01g[1], label="π = 0.5", color=colors[1])
+    axs1[1].plot(C, mindcf_RBFSVM_01g[2], label="π = 0.9", color=colors[2])
     axs1[1].set_xscale('log')
     axs1[1].set_xticks(C)
     axs1[1].set_xlabel("C")
     axs1[1].set_ylim([0, 1.2])
     axs1[1].set_ylabel("minDCF")
     
-    axs1[2].set_title('gamma = 1')
-    axs1[2].plot(C, mindcf_RBFSVM_1g[0], label="π = 0.1", color=colors[0], linestyle='dotted')
-    axs1[2].plot(C, mindcf_RBFSVM_1g[1], label="π = 0.5", color=colors[1], linestyle='dotted')
-    axs1[2].plot(C, mindcf_RBFSVM_1g[2], label="π = 0.9", color=colors[2], linestyle='dotted')
+    axs1[2].set_title('γ = 1')
+    axs1[2].plot(C, mindcf_RBFSVM_1g[0], label="π = 0.1", color=colors[0])
+    axs1[2].plot(C, mindcf_RBFSVM_1g[1], label="π = 0.5", color=colors[1])
+    axs1[2].plot(C, mindcf_RBFSVM_1g[2], label="π = 0.9", color=colors[2])
     axs1[2].set_xscale('log')
     axs1[2].set_xticks(C)
     axs1[2].set_xlabel("C")
@@ -398,9 +398,7 @@ def plot_lambda_minDCF_RBFSVM(C, mindcf_RBFSVM_001g, mindcf_RBFSVM_01g, mindcf_R
     
     
 
-    fig1.legend([   'π = 0.1 - γ = 0.01', 'π = 0.5 - γ = 0.01', 'π = 0.9 - γ = 0.01',
-                    'π = 0.1 - γ = 0.1', 'π = 0.5 - γ = 0.1', 'π = 0.9 - γ = 0.1',
-                    'π = 0.1 - γ = 1', 'π = 0.5 - γ = 1', 'π = 0.9 - γ = 1'], loc='lower right')
+    fig1.legend(['π = 0.1', 'π = 0.5', 'π = 0.9'], loc='lower right')
     plt.show()
 
 

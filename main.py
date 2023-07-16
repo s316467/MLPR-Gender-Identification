@@ -768,7 +768,7 @@ if __name__ == '__main__':
     # #####################
     # # Testing various gammas => 0.01 0.1 1
     
-    # hparams = {'K': 1, 'eps': 1, 'gamma': 0.01, 'C': 1, 'c': 0, 'd': 1}
+    # hparams = {'K': 1, 'eps': 1, 'gamma': 0.01, 'C': 1, 'd': 1}
     # dim_red = None #{'type': 'pca', 'm': 11}
     # C = [1.E-4, 1.E-3, 1.E-2, 1.E-1, 1, 10, 100]
     # mindcf_RBFSVM_noPCA_01p_001g = []
@@ -778,7 +778,7 @@ if __name__ == '__main__':
     # for c in C:
     #     hparams['C'] = c
     #     print('R: SVM RBF\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
-    #     _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF', prior=0.5), DT, LT, k=5, preproc='raw', dimred=dim_red, iprint=True)
+    #     _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
     #     mindcf_RBFSVM_noPCA_01p_001g.append(mindcf[0])
     #     mindcf_RBFSVM_noPCA_05p_001g.append(mindcf[1])
     #     mindcf_RBFSVM_noPCA_09p_001g.append(mindcf[2])
@@ -793,7 +793,7 @@ if __name__ == '__main__':
     # for c in C:
     #     hparams['C'] = c
     #     print('R: SVM RBF\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
-    #     _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF', prior=0.5), DT, LT, k=5, preproc='raw', dimred=dim_red, iprint=True)
+    #     _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
     #     mindcf_RBFSVM_noPCA_01p_01g.append(mindcf[0])
     #     mindcf_RBFSVM_noPCA_05p_01g.append(mindcf[1])
     #     mindcf_RBFSVM_noPCA_09p_01g.append(mindcf[2])
@@ -808,7 +808,7 @@ if __name__ == '__main__':
     # for c in C:
     #     hparams['C'] = c
     #     print('R: SVM RBF\nPreprocessing: znorm\nDim. Reduction: %s\nHyperparameters: %s' % (dim_red, hparams))
-    #     _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF', prior=0.5), DT, LT, k=5, preproc='raw', dimred=dim_red, iprint=True)
+    #     _, mindcf = Evaluation.kfold_cross_validation(SVM_Clf.SVM(hparams, kernel='RBF'), DT, LT, k=5, preproc='znorm', dimred=dim_red, iprint=True)
     #     mindcf_RBFSVM_noPCA_01p_1g.append(mindcf[0])
     #     mindcf_RBFSVM_noPCA_05p_1g.append(mindcf[1])
     #     mindcf_RBFSVM_noPCA_09p_1g.append(mindcf[2])
